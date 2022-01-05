@@ -1,6 +1,8 @@
 package br.com.efrozza.awsprojeto01.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 // garantir unicidade por algum campo da tabela
 @Table(
         uniqueConstraints = {
