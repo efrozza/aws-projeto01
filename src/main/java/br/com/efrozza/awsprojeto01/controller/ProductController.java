@@ -44,7 +44,7 @@ public class ProductController {
 
     }
 
-    @PutMapping
+    @PutMapping(path = "/{id}")
     public ResponseEntity<Product> updateProduct
             (@RequestBody Product product, @PathVariable("id") long id) {
         if (productRepository.existsById(id)) {
@@ -56,7 +56,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping(path = "/id")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable("id") long id) {
         Optional<Product> optProduct = productRepository.findById(id);
         if (optProduct.isPresent()) {
