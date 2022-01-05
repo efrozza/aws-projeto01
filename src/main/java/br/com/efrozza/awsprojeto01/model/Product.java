@@ -1,23 +1,14 @@
 package br.com.efrozza.awsprojeto01.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
 
-@Getter
-@Setter
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 // garantir unicidade por algum campo da tabela
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"code"})
         }
 )
+@Entity
 public class Product {
 
     @Id
@@ -35,5 +26,43 @@ public class Product {
 
     private float price;
 
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
 }
