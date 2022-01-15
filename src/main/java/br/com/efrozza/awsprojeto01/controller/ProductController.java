@@ -1,7 +1,9 @@
 package br.com.efrozza.awsprojeto01.controller;
 
+import br.com.efrozza.awsprojeto01.enums.EventType;
 import br.com.efrozza.awsprojeto01.model.Product;
 import br.com.efrozza.awsprojeto01.repository.ProductRepository;
+import br.com.efrozza.awsprojeto01.service.ProductPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductPublisher productPublisher;
 
     @GetMapping
     public List<Product> findAll() {
@@ -40,6 +45,9 @@ public class ProductController {
             @RequestBody Product product) {
         Product productCreated = productRepository.save(product);
 
+        // publica evento na SNS
+        productPublisher.publishProductEvent(productCreated, EventType.PRODUCT_CREATED, "criadorDeProduto");
+
         return new ResponseEntity<Product>(productCreated, HttpStatus.CREATED);
 
     }
@@ -50,6 +58,8 @@ public class ProductController {
         if (productRepository.existsById(id)) {
             product.setId(id);
             Product productUpdated = productRepository.save(product);
+            // publica evento na SNS
+            productPublisher.publishProductEvent(productUpdated, EventType.PRODUCT_CREATED, "alteradorDeProduto");
             return new ResponseEntity<Product>(productUpdated, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,9 +70,10 @@ public class ProductController {
     public ResponseEntity<Product> deleteProduct(@PathVariable("id") long id) {
         Optional<Product> optProduct = productRepository.findById(id);
         if (optProduct.isPresent()) {
-            Product p = optProduct.get();
-            productRepository.delete(p);
-            return new ResponseEntity<Product>(p, HttpStatus.OK);
+            Product productDeleted = optProduct.get();
+            productRepository.delete(productDeleted);
+            productPublisher.publishProductEvent(productDeleted, EventType.PRODUCT_DELETED, "deletadorDeProduto");
+            return new ResponseEntity<Product>(productDeleted, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

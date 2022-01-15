@@ -1,15 +1,17 @@
 package br.com.efrozza.awsprojeto01.model.sns;
 
+import br.com.efrozza.awsprojeto01.enums.EventType;
+
 public class Envelope {
 
-    private String eventType;
+    private EventType eventType;
     private String data;
 
-    public String getEventType() {
+    public EventType getEventType() {
         return eventType;
     }
 
-    public void setEventType(String eventType) {
+    public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
 
