@@ -24,11 +24,11 @@ public class ProductPublisher {
     private ObjectMapper objectMapper;
 
     public ProductPublisher(AmazonSNS snsClient, @Qualifier("productEventsTopic")
-            Topic productEnvetsTopic,
+            Topic productEventsTopic,
                             ObjectMapper objectMapper) {
 
         this.snsClient = snsClient;
-        this.productEventsTopic = productEnvetsTopic;
+        this.productEventsTopic = productEventsTopic;
         this.objectMapper = objectMapper;
     }
 

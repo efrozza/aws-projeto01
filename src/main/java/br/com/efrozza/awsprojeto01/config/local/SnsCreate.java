@@ -2,7 +2,6 @@ package br.com.efrozza.awsprojeto01.config.local;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
@@ -23,15 +22,15 @@ public class SnsCreate {
     private final String productEventsTopic;
     private final AmazonSNS snsClient;
 
+
     public SnsCreate() {
         this.snsClient = AmazonSNSClient.builder()
-            .withEndpointConfiguration(new AwsClientBuilder
-                    .EndpointConfiguration("http://localhost:4566",
-                    Regions.US_EAST_1.getName()))
-            .withCredentials(new DefaultAWSCredentialsProviderChain())
+                .withEndpointConfiguration(new AwsClientBuilder
+                        .EndpointConfiguration("http://localhost:4566",
+                        Regions.US_EAST_1.getName()))
+                .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .build();
 
-        // mesmo nome usado no application.properties aws.sns.topic.product.events.arn=product-events
         CreateTopicRequest createTopicRequest = new CreateTopicRequest("product-events");
         this.productEventsTopic = this.snsClient.createTopic(createTopicRequest).getTopicArn();
 
