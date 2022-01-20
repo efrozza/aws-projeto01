@@ -1,0 +1,3 @@
+rodar localstack
+
+run --rm -p 4566:66 -p 4571:4571 localstack/localstack -e "SERVICES=sns,sqs,dynamodb,s3"
