@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Configuration
 
-// configurar o profile de execução no intelliJ
+// configurar o profile de execucao no intelliJ
 // Menu Run -> Edit configurations
+@Configuration
 @Profile("!local")
 public class SnsConfig {
 
@@ -20,7 +20,7 @@ public class SnsConfig {
     private String awsRegion;
 
     @Value("${aws.sns.topic.product.events.arn}")
-    private String productEventTopic;
+    private String productEventsTopic;
 
     @Bean
     public AmazonSNS snsClient(){
@@ -30,9 +30,9 @@ public class SnsConfig {
                 .build();
     }
 
-    @Bean(name = "productEventTopic")
+    @Bean(name = "productEventsTopic")
     public Topic snsProductEventTopic(){
-        return new Topic().withTopicArn(productEventTopic);
+        return new Topic().withTopicArn(productEventsTopic);
     }
 
 }

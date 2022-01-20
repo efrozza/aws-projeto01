@@ -16,38 +16,37 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("local")
-// na aws em produção o profile se chama "default", então essa classe não é executada
 public class SnsCreate {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnsCreate.class);
 
-    private final String productEventTopic;
+    private final String productEventsTopic;
     private final AmazonSNS snsClient;
 
-    public SnsCreate(String productEventTopic, AmazonSNS snsClient) {
-        this.productEventTopic = productEventTopic;
+    public SnsCreate() {
         this.snsClient = AmazonSNSClient.builder()
-            .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:4566",
+            .withEndpointConfiguration(new AwsClientBuilder
+                    .EndpointConfiguration("http://localhost:4566",
                     Regions.US_EAST_1.getName()))
             .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .build();
 
         // mesmo nome usado no application.properties aws.sns.topic.product.events.arn=product-events
         CreateTopicRequest createTopicRequest = new CreateTopicRequest("product-events");
-        productEventTopic = this.snsClient.createTopic(createTopicRequest).getTopicArn();
+        this.productEventsTopic = this.snsClient.createTopic(createTopicRequest).getTopicArn();
 
-        LOG.info("SNS topic ARN: {}", this.productEventTopic);
+        LOG.info("SNS topic ARN: {}", this.productEventsTopic);
     }
 
 
     @Bean
-    public AmazonSNS getSnsClient() {
+    public AmazonSNS snsClient() {
         return this.snsClient;
     }
 
-    @Bean(name = "productEventTopic")
-    public Topic snsProductEventTopic() {
-        return new Topic().withTopicArn(productEventTopic);
+    @Bean(name = "productEventsTopic")
+    public Topic snsProductEventsTopic() {
+        return new Topic().withTopicArn(productEventsTopic);
     }
 
 

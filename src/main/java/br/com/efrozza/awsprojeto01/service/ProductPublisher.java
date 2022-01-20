@@ -20,15 +20,15 @@ public class ProductPublisher {
             ProductPublisher.class);
 
     private AmazonSNS snsClient;
-    private Topic productEnvetsTopic;
+    private Topic productEventsTopic;
     private ObjectMapper objectMapper;
 
-    public ProductPublisher(AmazonSNS snsClient, @Qualifier("productEventTopic")
+    public ProductPublisher(AmazonSNS snsClient, @Qualifier("productEventsTopic")
             Topic productEnvetsTopic,
                             ObjectMapper objectMapper) {
 
         this.snsClient = snsClient;
-        this.productEnvetsTopic = productEnvetsTopic;
+        this.productEventsTopic = productEnvetsTopic;
         this.objectMapper = objectMapper;
     }
 
@@ -51,7 +51,7 @@ public class ProductPublisher {
 
             // publica o topico
             snsClient.publish(
-                    productEnvetsTopic.getTopicArn(),
+                    productEventsTopic.getTopicArn(),
                     objectMapper.writeValueAsString(envelope)
             );
 
